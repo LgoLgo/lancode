@@ -9,7 +9,7 @@ Distilled from Claude Code's architecture: the agentic loop, tool system, permis
 Requires Java 17+ and Maven.
 
 ```
-git clone <repo>
+git clone https://github.com/LgoLgo/lancode
 cd lancode
 mvn package -q -DskipTests
 ```
@@ -118,4 +118,4 @@ Tests live in `src/test/java/com/lancode/tools/`.
 
 ## License
 
-MIT
+Apache 2.0
