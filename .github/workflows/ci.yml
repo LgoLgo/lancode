@@ -33,9 +33,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Build with Jekyll
+        run: |
+          cd docs
+          bundle install
+          bundle exec jekyll build --destination ../_site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/
+          path: _site/
       - id: deployment
         uses: actions/deploy-pages@v4

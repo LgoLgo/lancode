@@ -1,5 +1,6 @@
 ---
 title: 第一章：Agent Loop
+nav_order: 2
 ---
 
 # 第一章：Agent Loop

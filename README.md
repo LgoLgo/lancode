@@ -223,6 +223,7 @@ mvn package -DskipTests    # 构建 fat jar
 
 - [ultraworkers/claw-code](https://github.com/ultraworkers/claw-code)
 - [bcefghj/miniClaudeCode](https://github.com/bcefghj/miniClaudeCode)
+- Special Thanks: [LinuxDO](https://linux.do/)
 
 ## 许可证
 

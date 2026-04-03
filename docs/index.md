@@ -1,5 +1,6 @@
 ---
-title: lancode 课程
+title: 首页
+nav_order: 1
 ---
 
 # lancode 课程
@@ -21,3 +22,7 @@ title: lancode 课程
 ## 源码
 
 [github.com/LgoLgo/lancode](https://github.com/LgoLgo/lancode)
+
+## 参考
+
+特别感谢 [LinuxDO](https://linux.do/) 社区的支持与交流。

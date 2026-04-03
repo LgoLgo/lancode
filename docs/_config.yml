@@ -1,0 +1,17 @@
+title: lancode 课程
+description: 用 Java 实现的极简 Claude Code Agent Loop — 逐章解析
+remote_theme: just-the-docs/just-the-docs
+
+url: https://lgolgo.github.io
+baseurl: /lancode
+
+aux_links:
+  "GitHub":
+    - "https://github.com/LgoLgo/lancode"
+
+nav_sort: case_sensitive
+
+color_scheme: light
+
+plugins:
+  - jekyll-remote-theme
