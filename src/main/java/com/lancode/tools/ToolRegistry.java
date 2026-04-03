@@ -43,6 +43,11 @@ public class ToolRegistry {
     public static ToolRegistry defaultRegistry(Config config) {
         ToolRegistry registry = new ToolRegistry();
         registry.register(new BashTool(config));
+        registry.register(new FileReadTool());
+        registry.register(new FileWriteTool());
+        registry.register(new FileEditTool());
+        registry.register(new GlobTool());
+        registry.register(new GrepTool());
         return registry;
     }
 }
