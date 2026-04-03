@@ -34,10 +34,10 @@ public class Main {
 
         ToolRegistry registry = ToolRegistry.defaultRegistry(config);
         ConversationContext context = new ConversationContext(config);
-        PermissionGate gate = new PermissionGate(config);
-        AgentLoop agent = new AgentLoop(config, context, registry, gate);
 
         if (oneShot != null) {
+            PermissionGate gate = new PermissionGate(config, new Scanner(System.in));
+            AgentLoop agent = new AgentLoop(config, context, registry, gate);
             try {
                 agent.run(oneShot);
                 System.out.println();
@@ -48,12 +48,14 @@ public class Main {
             return;
         }
 
-        runInteractive(agent, config, registry);
+        runInteractive(config, context, registry);
     }
 
-    static void runInteractive(AgentLoop agent, Config config, ToolRegistry registry) {
+    static void runInteractive(Config config, ConversationContext context, ToolRegistry registry) {
         System.out.println(BANNER);
         Scanner sc = new Scanner(System.in);
+        PermissionGate gate = new PermissionGate(config, sc);
+        AgentLoop agent = new AgentLoop(config, context, registry, gate);
 
         while (true) {
             System.out.print("\n> ");

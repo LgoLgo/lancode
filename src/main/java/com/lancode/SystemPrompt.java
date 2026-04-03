@@ -32,15 +32,15 @@ public class SystemPrompt {
         String toolList = registry.allTools().stream()
             .map(t -> "- **" + t.name() + "**: " + t.description())
             .reduce("", (a, b) -> a + "\n" + b).strip();
-        String instructions = loadClaudeMd(projectDir);
+        String instructions = loadAgentMd(projectDir);
         String projectSection = instructions.isEmpty() ? "" :
-            "## Project Instructions (from CLAUDE.md)\n\n" + instructions;
+            "## Project Instructions (from AGENT.md)\n\n" + instructions;
         return TEMPLATE.formatted(toolList, mode.name(), MODE_DESC.get(mode.name()), projectSection).strip();
     }
 
-    private static String loadClaudeMd(String dir) {
+    private static String loadAgentMd(String dir) {
         try {
-            Path p = Path.of(dir != null ? dir : System.getProperty("user.dir")).resolve("CLAUDE.md");
+            Path p = Path.of(dir != null ? dir : System.getProperty("user.dir")).resolve("AGENT.md");
             return Files.exists(p) ? Files.readString(p).strip() : "";
         } catch (Exception e) { return ""; }
     }

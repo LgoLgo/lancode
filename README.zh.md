@@ -16,6 +16,63 @@
 
 从 Claude Code 的架构中提炼而来 —— Agent Loop、工具系统、权限模型、上下文管理 —— 剥离到最核心的结构，方便阅读和学习。
 
+## 实现范围
+
+```mermaid
+---
+title: lancode vs Claude Code subsystems
+---
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#E6E2DA',
+      'primaryTextColor': '#2C2C2C',
+      'primaryBorderColor': '#8C867F',
+      'lineColor': '#8C867F',
+      'fontFamily': 'Georgia, serif'
+    }
+  }
+}%%
+flowchart TD
+    subgraph implemented["Implemented in lancode"]
+        AL["Agent Loop<br/>synchronous · sequential"]
+        CC["Conversation Context<br/>in-memory · truncation"]
+        PG["Permission Gate<br/>2 layers: self-check + mode"]
+        SP["System Prompt<br/>tools + AGENT.md + mode"]
+        TR["Tool Registry<br/>6 core tools"]
+        T1["bash"]
+        T2["read_file · write_file · edit_file"]
+        T3["glob · grep"]
+    end
+
+    subgraph out["Out of scope"]
+        S1["Session Persistence"]
+        S2["Context Compaction"]
+        S3["MCP Extension"]
+        S4["Streaming / SSE"]
+        S5["Hook System"]
+        S6["SubAgent / Teams"]
+        S7["Sandbox Policy"]
+    end
+
+    AL --> CC
+    AL --> PG
+    AL --> SP
+    AL --> TR
+    TR --> T1
+    TR --> T2
+    TR --> T3
+
+    classDef impl     fill:#D7E6DC,stroke:#7FB08F,color:#2C2C2C,stroke-width:1.5px
+    classDef tool     fill:#EAF4FB,stroke:#6FA8D6,color:#2C2C2C,stroke-width:1.5px
+    classDef outscope fill:#EFECE6,stroke:#B4AEA6,color:#2C2C2C,stroke-width:1.5px
+
+    class AL,CC,PG,SP,TR impl
+    class T1,T2,T3 tool
+    class S1,S2,S3,S4,S5,S6,S7 outscope
+```
+
 ## 安装
 
 需要 Java 17+ 和 Maven。
@@ -58,6 +115,18 @@ EOF
 第三方 API 通常使用 `Authorization: Bearer` 认证，应使用 `authToken` 字段。`apiKey` 仅用于官方 Anthropic API（发 `x-api-key` 头）。
 
 所有字段均为可选。未提供配置文件时，从环境变量 `ANTHROPIC_API_KEY` 读取密钥，使用官方 Anthropic 端点。
+
+## AGENT.md
+
+在项目根目录放置 `AGENT.md` 文件，可为 lancode 提供项目专属指令，启动时自动加载并注入系统提示。
+
+```
+your-project/
+├── AGENT.md        ← lancode 自动读取
+└── src/
+```
+
+这是 lancode 对 Claude Code `CLAUDE.md` 机制的等价实现——命名为 `AGENT.md` 以区分：这是给 agent 的指令，而非给 Claude Code 工具本身的配置。
 
 ## 运行
 
@@ -117,24 +186,13 @@ Main                    CLI 入口、REPL、参数解析
 AgentLoop               核心循环：prompt → API → tool_use → execute → 循环
   ConversationContext   消息列表，含截断逻辑
   PermissionGate        两层权限：工具自检 + 模式强制
-  SystemPrompt          组装系统提示（工具列表 + CLAUDE.md + 模式）
+  SystemPrompt          组装系统提示（工具列表 + AGENT.md + 模式）
   ToolRegistry          工具注册表，生成 API Schema
     Tool (interface)    name / description / inputSchema / execute
     ToolResult (record) output + isError
 ```
 
 循环在模型返回不含 `tool_use` 的响应时退出，或达到 `maxTurns` 上限时终止。
-
-## 与 Claude Code 的对比
-
-Claude Code 有 ~50 万行代码，横跨 28 个子系统。lancode 只保留其中 4 个：
-
-| 子系统 | Claude Code | lancode |
-|--------|-------------|---------|
-| Agent Loop | SSE 流式、并行 | 同步、顺序 |
-| 工具 | 26+ 种，支持 MCP 扩展 | 6 个核心工具 |
-| 权限 | 5 层 + Hook 系统 | 2 层 |
-| 上下文 | 持久化、压缩 | 内存存储、截断 |
 
 ## 开发
 

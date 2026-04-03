@@ -6,9 +6,13 @@ import java.util.*;
 
 public class PermissionGate {
     private final Config config;
+    private final Scanner scanner;
     private static final Set<String> WRITE_TOOLS = Set.of("bash", "write_file", "edit_file");
 
-    public PermissionGate(Config config) { this.config = config; }
+    public PermissionGate(Config config, Scanner scanner) {
+        this.config = config;
+        this.scanner = scanner;
+    }
 
     /** Returns null if allowed, or a denied ToolResult. */
     public ToolResult check(Tool tool, Map<String, Object> params) {
@@ -40,8 +44,7 @@ public class PermissionGate {
         System.out.print(prompt);
         System.out.flush();
         try {
-            var sc = new java.util.Scanner(System.in);
-            String answer = sc.nextLine().strip().toLowerCase();
+            String answer = scanner.nextLine().strip().toLowerCase();
             return answer.equals("y") || answer.equals("yes");
         } catch (Exception e) { return false; }
     }

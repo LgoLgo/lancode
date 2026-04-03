@@ -46,6 +46,7 @@ public class AgentLoop {
             builder.authToken(config.authToken);
         }
         this.client = builder.build();
+        context.setSystemPrompt(SystemPrompt.build(registry, config.permissionMode, System.getProperty("user.dir")));
     }
 
     public String run(String userMessage) {
