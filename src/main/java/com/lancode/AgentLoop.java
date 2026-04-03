@@ -34,8 +34,10 @@ public class AgentLoop {
         this.context = context;
         this.registry = registry;
         this.permissionGate = permissionGate;
-        AnthropicOkHttpClient.Builder builder = AnthropicOkHttpClient.builder()
-            .fromEnv();
+        AnthropicOkHttpClient.Builder builder = AnthropicOkHttpClient.builder().fromEnv();
+        if (config.apiKey != null && !config.apiKey.isBlank()) {
+            builder.apiKey(config.apiKey);
+        }
         if (config.baseUrl != null && !config.baseUrl.isBlank()) {
             builder.baseUrl(config.baseUrl);
         }

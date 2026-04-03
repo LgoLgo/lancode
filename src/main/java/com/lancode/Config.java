@@ -1,15 +1,23 @@
 package com.lancode;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Config {
     public enum PermissionMode { ASK, AUTO, PLAN }
 
-    public String model = "claude-sonnet-4-5-20251001";
-    public String baseUrl = null;  // null = 使用官方地址；设置后走第三方，如 "https://api.longcat.chat/anthropic"
+    public String model = "LongCat-Flash-Lite";
+    public String baseUrl = null;
+    public String apiKey = null;   // 优先于环境变量 ANTHROPIC_API_KEY
     public int maxTurns = 30;
     public int maxContextMessages = 100;
-    public PermissionMode permissionMode = PermissionMode.ASK;
+    public PermissionMode permissionMode = PermissionMode.AUTO;
+    public Map<String, String> env = null;  // 注入额外环境变量（仅用于传给子进程，不影响 JVM）
     public List<String> allowedCommands = List.of(
         "ls", "cat", "head", "tail", "wc", "find", "grep",
         "git status", "git diff", "git log", "git branch",
@@ -22,4 +30,18 @@ public class Config {
         "> /dev/sda", "mkfs", "dd if=",
         ":(){ :|:& };:"
     );
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /** 从 ~/.lancode/settings.json 加载，文件不存在时返回默认 Config。 */
+    public static Config load() {
+        Path settings = Path.of(System.getProperty("user.home"), ".lancode", "settings.json");
+        if (!Files.exists(settings)) return new Config();
+        try {
+            return MAPPER.readValue(settings.toFile(), Config.class);
+        } catch (Exception e) {
+            System.err.println("[warn] Failed to parse ~/.lancode/settings.json: " + e.getMessage());
+            return new Config();
+        }
+    }
 }

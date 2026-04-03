@@ -19,7 +19,7 @@ public class Main {
         """;
 
     public static void main(String[] args) {
-        Config config = new Config();
+        Config config = Config.load();  // 从 ~/.lancode/settings.json 加载
         String oneShot = null;
 
         for (int i = 0; i < args.length; i++) {
