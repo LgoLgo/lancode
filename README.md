@@ -1,6 +1,6 @@
 <div align="center">
 
-# lancode
+<img src="img/img.png" alt="lancode" width="480" />
 
 **A minimal Claude Code agent loop in Java.**
 
