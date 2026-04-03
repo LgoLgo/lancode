@@ -42,7 +42,7 @@ cat > ~/.lancode/settings.json << 'EOF'
 EOF
 ```
 
-**Third-party Anthropic-compatible API** (e.g. OpenRouter, AWS Bedrock proxies, self-hosted)
+**Third-party Anthropic-compatible API** (e.g. LongCat, OpenRouter, self-hosted)
 
 ```bash
 mkdir -p ~/.lancode
@@ -50,11 +50,13 @@ cat > ~/.lancode/settings.json << 'EOF'
 {
   "model": "your-model-name",
   "baseUrl": "https://your-api-endpoint",
-  "apiKey": "your-key-here",
+  "authToken": "your-key-here",
   "permissionMode": "AUTO"
 }
 EOF
 ```
+
+Use `authToken` instead of `apiKey` for providers that require `Authorization: Bearer` authentication (most third-party proxies). Use `apiKey` only for the official Anthropic API.
 
 All fields are optional. Without a config file, `ANTHROPIC_API_KEY` is read from the environment and the official Anthropic endpoint is used.
 
@@ -86,7 +88,8 @@ java -jar target/lancode-0.1.0.jar --model claude-opus-4-5 --mode ask
 |-------|---------|-------------|
 | `model` | `claude-opus-4-5` | Model name passed to the API |
 | `baseUrl` | Anthropic official | Override API endpoint |
-| `apiKey` | `$ANTHROPIC_API_KEY` | API key; env var used as fallback |
+| `apiKey` | `$ANTHROPIC_API_KEY` | For official Anthropic API; sends `x-api-key` header |
+| `authToken` | — | For third-party APIs; sends `Authorization: Bearer` header |
 | `permissionMode` | `AUTO` | `AUTO` \| `ASK` \| `PLAN` |
 | `maxTurns` | `30` | Max agent loop iterations per message |
 | `maxContextMessages` | `100` | Message history limit before truncation |

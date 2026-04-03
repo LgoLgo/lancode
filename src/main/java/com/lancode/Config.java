@@ -13,7 +13,8 @@ public class Config {
 
     public String model = "LongCat-Flash-Lite";
     public String baseUrl = null;
-    public String apiKey = null;   // 优先于环境变量 ANTHROPIC_API_KEY
+    public String apiKey = null;    // 优先于环境变量 ANTHROPIC_API_KEY，发 x-api-key 头
+    public String authToken = null; // 第三方 API（如 LongCat）用 Authorization: Bearer，与 apiKey 二选一
     public int maxTurns = 30;
     public int maxContextMessages = 100;
     public PermissionMode permissionMode = PermissionMode.AUTO;

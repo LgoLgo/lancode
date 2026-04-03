@@ -41,7 +41,7 @@ cat > ~/.lancode/settings.json << 'EOF'
 EOF
 ```
 
-**第三方兼容 API**（如 OpenRouter、AWS Bedrock 代理、自托管服务等）
+**第三方兼容 API**（如 LongCat、OpenRouter、自托管服务等）
 
 ```bash
 mkdir -p ~/.lancode
@@ -49,11 +49,13 @@ cat > ~/.lancode/settings.json << 'EOF'
 {
   "model": "your-model-name",
   "baseUrl": "https://your-api-endpoint",
-  "apiKey": "your-key-here",
+  "authToken": "your-key-here",
   "permissionMode": "AUTO"
 }
 EOF
 ```
+
+第三方 API 通常使用 `Authorization: Bearer` 认证，应使用 `authToken` 字段。`apiKey` 仅用于官方 Anthropic API（发 `x-api-key` 头）。
 
 所有字段均为可选。未提供配置文件时，从环境变量 `ANTHROPIC_API_KEY` 读取密钥，使用官方 Anthropic 端点。
 
@@ -85,7 +87,8 @@ java -jar target/lancode-0.1.0.jar --model claude-opus-4-5 --mode ask
 |------|--------|------|
 | `model` | `claude-opus-4-5` | 传给 API 的模型名 |
 | `baseUrl` | Anthropic 官方端点 | 自定义 API 地址 |
-| `apiKey` | `$ANTHROPIC_API_KEY` | API 密钥，环境变量作为回退 |
+| `apiKey` | `$ANTHROPIC_API_KEY` | 官方 Anthropic API，发 `x-api-key` 头 |
+| `authToken` | — | 第三方 API，发 `Authorization: Bearer` 头 |
 | `permissionMode` | `AUTO` | `AUTO` \| `ASK` \| `PLAN` |
 | `maxTurns` | `30` | 每条消息最大 Agent Loop 轮数 |
 | `maxContextMessages` | `100` | 触发截断前的消息历史上限 |

@@ -41,6 +41,10 @@ public class AgentLoop {
         if (config.baseUrl != null && !config.baseUrl.isBlank()) {
             builder.baseUrl(config.baseUrl);
         }
+        if (config.authToken != null && !config.authToken.isBlank()) {
+            // Third-party APIs (e.g. LongCat) use "Authorization: Bearer" instead of "x-api-key".
+            builder.authToken(config.authToken);
+        }
         this.client = builder.build();
     }
 
