@@ -28,18 +28,34 @@ mvn package -q -DskipTests
 
 ## 配置
 
+**官方 Anthropic API**
+
 ```bash
 mkdir -p ~/.lancode
 cat > ~/.lancode/settings.json << 'EOF'
 {
   "model": "claude-opus-4-5",
+  "apiKey": "sk-ant-...",
+  "permissionMode": "AUTO"
+}
+EOF
+```
+
+**第三方兼容 API**（如 OpenRouter、AWS Bedrock 代理、自托管服务等）
+
+```bash
+mkdir -p ~/.lancode
+cat > ~/.lancode/settings.json << 'EOF'
+{
+  "model": "your-model-name",
+  "baseUrl": "https://your-api-endpoint",
   "apiKey": "your-key-here",
   "permissionMode": "AUTO"
 }
 EOF
 ```
 
-所有字段均为可选。未提供配置文件时，从环境变量 `ANTHROPIC_API_KEY` 读取密钥，使用官方 Anthropic 端点。设置 `baseUrl` 可对接任何兼容 API。
+所有字段均为可选。未提供配置文件时，从环境变量 `ANTHROPIC_API_KEY` 读取密钥，使用官方 Anthropic 端点。
 
 ## 运行
 

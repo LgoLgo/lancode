@@ -29,18 +29,34 @@ mvn package -q -DskipTests
 
 ## Configure
 
+**Official Anthropic API**
+
 ```bash
 mkdir -p ~/.lancode
 cat > ~/.lancode/settings.json << 'EOF'
 {
   "model": "claude-opus-4-5",
+  "apiKey": "sk-ant-...",
+  "permissionMode": "AUTO"
+}
+EOF
+```
+
+**Third-party Anthropic-compatible API** (e.g. OpenRouter, AWS Bedrock proxies, self-hosted)
+
+```bash
+mkdir -p ~/.lancode
+cat > ~/.lancode/settings.json << 'EOF'
+{
+  "model": "your-model-name",
+  "baseUrl": "https://your-api-endpoint",
   "apiKey": "your-key-here",
   "permissionMode": "AUTO"
 }
 EOF
 ```
 
-All fields are optional. Without a config file, `ANTHROPIC_API_KEY` is read from the environment and the official Anthropic endpoint is used. Set `baseUrl` to point at any Anthropic-compatible API.
+All fields are optional. Without a config file, `ANTHROPIC_API_KEY` is read from the environment and the official Anthropic endpoint is used.
 
 ## Run
 
