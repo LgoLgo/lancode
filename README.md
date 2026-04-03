@@ -16,9 +16,80 @@
 
 从 Claude Code 的架构中提炼而来 —— Agent Loop、工具系统、权限模型、上下文管理 —— 剥离到最核心的结构，方便阅读和学习。
 
-## 实现范围
+## 系统设计
 
-<!-- diagram: img/subsystems.png -->
+### 架构
+
+<img src="img/lancode-architecture.svg" alt="lancode 架构图" width="100%" />
+
+### 时序
+
+一次典型 Agent Loop 的执行过程：
+
+```mermaid
+---
+title: lancode — 一次典型 Agent Loop
+---
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'fontFamily': 'Georgia, serif',
+      'actorBkg': '#E6E2DA',
+      'actorBorder': '#8C867F',
+      'actorTextColor': '#2C2C2C',
+      'actorLineColor': '#8C867F',
+      'signalColor': '#8C867F',
+      'signalTextColor': '#2C2C2C',
+      'labelBoxBkgColor': '#E6E2DA',
+      'labelBoxBorderColor': '#8C867F',
+      'labelTextColor': '#2C2C2C',
+      'loopTextColor': '#2C2C2C',
+      'activationBkgColor': '#CFE8D7',
+      'activationBorderColor': '#71AE88',
+      'noteBkgColor': '#F3E4DA',
+      'noteBorderColor': '#C88E6A',
+      'noteTextColor': '#2C2C2C'
+    }
+  }
+}%%
+sequenceDiagram
+    participant 用户
+    participant Main as Main（REPL）
+    participant AgentLoop
+    participant API as Anthropic API
+    participant ToolRegistry
+    participant Tool
+    participant ConversationContext
+
+    用户 ->> Main: 输入请求
+    Main ->> AgentLoop: run(userMessage)
+    AgentLoop ->> ConversationContext: addUserMessage()
+
+    loop 循环直到无 tool_use 或达到 maxTurns
+        AgentLoop ->> API: callApi()（含消息、系统提示、工具 schema）
+        API -->> AgentLoop: 返回响应（text 或 tool_use）
+
+        alt 返回 tool_use
+            AgentLoop ->> ToolRegistry: get(toolName)
+            ToolRegistry -->> AgentLoop: 返回 Tool 实例
+            AgentLoop ->> Tool: execute(input)（先经 PermissionGate 检查）
+            Tool -->> AgentLoop: ToolResult
+            AgentLoop ->> ConversationContext: addToolResults()
+        else 返回纯文本
+            AgentLoop ->> ConversationContext: addAssistantMessage()
+        end
+    end
+
+    AgentLoop -->> Main: 返回最终文本
+    Main -->> 用户: 输出结果
+```
+
+循环在模型返回不含 `tool_use` 的响应时退出，或达到 `maxTurns` 上限时终止。
+
+### 实现范围
+
+<img src="img/lancode-scope.png" alt="lancode 子系统覆盖范围" width="100%" />
 
 ## 安装
 
@@ -126,21 +197,6 @@ java -jar target/lancode-0.1.0.jar --model claude-opus-4-5 --mode ask
 | `glob` | 按 glob 模式查找文件 |
 | `grep` | 按正则搜索文件内容 |
 
-## 架构
-
-```
-Main                    CLI 入口、REPL、参数解析
-AgentLoop               核心循环：prompt → API → tool_use → execute → 循环
-  ConversationContext   消息列表，含截断逻辑
-  PermissionGate        两层权限：工具自检 + 模式强制
-  SystemPrompt          组装系统提示（工具列表 + AGENT.md + 模式）
-  ToolRegistry          工具注册表，生成 API Schema
-    Tool (interface)    name / description / inputSchema / execute
-    ToolResult (record) output + isError
-```
-
-循环在模型返回不含 `tool_use` 的响应时退出，或达到 `maxTurns` 上限时终止。
-
 ## 开发
 
 ```bash
@@ -151,6 +207,25 @@ mvn package -DskipTests    # 构建 fat jar
 
 测试位于 `src/test/java/com/lancode/tools/`。
 
+## 参考
+
+- [ultraworkers/claw-code](https://github.com/ultraworkers/claw-code)
+- [bcefghj/miniClaudeCode](https://github.com/bcefghj/miniClaudeCode)
+
 ## 许可证
 
 Apache 2.0
+
+---
+
+## 课程
+
+配套课程逐章解析各子系统的实现原理，适合已有 LLM 基础、想深入了解 Agent Loop 内部机制的工程师。
+
+| 章节 | 内容 | 链接 |
+|------|------|------|
+| 第一章：Agent Loop | 核心循环逻辑 | [阅读](https://lgolgo.github.io/lancode/01-agent-loop) |
+| 第二章：工具系统 | Tool 接口、Registry、6 个内置工具 | [阅读](https://lgolgo.github.io/lancode/02-tool-system) |
+| 第三章：权限模型 | PermissionGate 双层检查机制 | [阅读](https://lgolgo.github.io/lancode/03-permission) |
+| 第四章：对话上下文 | ConversationContext 消息管理与截断 | [阅读](https://lgolgo.github.io/lancode/04-context) |
+| 第五章：系统提示词 | SystemPrompt 组装逻辑 | [阅读](https://lgolgo.github.io/lancode/05-system-prompt) |
