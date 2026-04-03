@@ -11,10 +11,10 @@ import java.util.Map;
 public class Config {
     public enum PermissionMode { ASK, AUTO, PLAN }
 
-    public String model = "LongCat-Flash-Lite";
+    public String model = "claude-opus-4-5";
     public String baseUrl = null;
     public String apiKey = null;    // 优先于环境变量 ANTHROPIC_API_KEY，发 x-api-key 头
-    public String authToken = null; // 第三方 API（如 LongCat）用 Authorization: Bearer，与 apiKey 二选一
+    public String authToken = null; // 第三方兼容 API 用 Authorization: Bearer，与 apiKey 二选一
     public int maxTurns = 30;
     public int maxContextMessages = 100;
     public PermissionMode permissionMode = PermissionMode.AUTO;

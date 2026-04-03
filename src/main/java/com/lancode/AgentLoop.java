@@ -42,7 +42,7 @@ public class AgentLoop {
             builder.baseUrl(config.baseUrl);
         }
         if (config.authToken != null && !config.authToken.isBlank()) {
-            // 第三方 API（如 LongCat）使用 "Authorization: Bearer" 而非 "x-api-key"。
+            // 第三方兼容 API 使用 "Authorization: Bearer" 而非 "x-api-key"。
             builder.authToken(config.authToken);
         }
         this.client = builder.build();
