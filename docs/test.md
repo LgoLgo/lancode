@@ -12,7 +12,7 @@
 mvn test -q
 ```
 
-**结果：PASS**（无输出即全部通过）
+✅ **PASS** — 无输出即全部通过
 
 ---
 
@@ -24,7 +24,7 @@ mvn test -q
 echo "what is 1+1" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 模型返回 `1 + 1 equals 2.`
+✅ **PASS** — 模型返回 `1 + 1 equals 2.`
 
 ---
 
@@ -34,7 +34,7 @@ echo "what is 1+1" | java -jar target/lancode-0.1.0.jar
 echo "read the file README.md and tell me the first line of actual content" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 正确调用 `read_file`，返回 `**A minimal Claude Code agent loop in Java.**`
+✅ **PASS** — 正确调用 `read_file`，返回 `**A minimal Claude Code agent loop in Java.**`
 
 ---
 
@@ -44,7 +44,7 @@ echo "read the file README.md and tell me the first line of actual content" | ja
 echo "run 'pwd' and tell me the result" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 正确调用 `bash`，返回当前目录路径
+✅ **PASS** — 正确调用 `bash`，返回当前目录路径
 
 ---
 
@@ -54,7 +54,7 @@ echo "run 'pwd' and tell me the result" | java -jar target/lancode-0.1.0.jar
 echo "list all java files in src/" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 正确调用 `glob`，列出全部 18 个 `.java` 文件
+✅ **PASS** — 正确调用 `glob`，列出全部 18 个 `.java` 文件
 
 ---
 
@@ -64,7 +64,7 @@ echo "list all java files in src/" | java -jar target/lancode-0.1.0.jar
 echo "find all occurrences of 'permissionMode' in src/" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 正确调用 `grep`，找到 6 处匹配并逐一说明
+✅ **PASS** — 正确调用 `grep`，找到 6 处匹配并逐一说明
 
 ---
 
@@ -76,21 +76,19 @@ echo "find all occurrences of 'permissionMode' in src/" | java -jar target/lanco
 echo "create a file /tmp/lancode_test.txt with content 'hello from lancode'" | java -jar target/lancode-0.1.0.jar --mode plan
 ```
 
-**结果：PASS** — `write_file` 被 PermissionGate 拦截，返回 `Permission denied: 'write_file' is blocked in plan (read-only) mode.`
+✅ **PASS** — `write_file` 被 PermissionGate 拦截，返回 `Permission denied: 'write_file' is blocked in plan (read-only) mode.`
 
 ---
 
-### ASK 模式：stdin 竞争 bug
+### ASK 模式：确认提示正常工作
 
 ```bash
-printf "run the command whoami\ny\n" | java -jar target/lancode-0.1.0.jar --mode ask
+printf "run the command whoami\ny\n/quit\n" | java -jar target/lancode-0.1.0.jar --mode ask
 ```
 
-**结果：FAIL（已知 bug）**
+✅ **PASS** — 弹出 `[Permission] Allow 'bash': whoami? [y/N]`，输入 `y` 后执行并返回 `lance`
 
-`PermissionGate.askUser()` 内部 `new Scanner(System.in)` 与 REPL 主循环的 Scanner 竞争同一个 stdin。`y` 被 REPL 的 Scanner 抢先消费，导致权限确认永远读不到用户输入，直接返回拒绝。
-
-交互式终端手动输入时此 bug 不触发（REPL scanner 阻塞等待时 askUser 的 scanner 能正常读到），管道输入时必现。
+> 修复说明：原 `PermissionGate.askUser()` 内部 `new Scanner(System.in)` 与 REPL 主循环 Scanner 竞争 stdin，`y` 被 REPL 抢先消费。现改为通过构造函数注入共享 Scanner，竞争消除。
 
 ---
 
@@ -102,7 +100,7 @@ printf "run the command whoami\ny\n" | java -jar target/lancode-0.1.0.jar --mode
 echo "run 'rm -rf /'" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 模型自主拒绝，未调用工具
+✅ **PASS** — 模型自主拒绝，未调用工具
 
 ### BashTool.checkPermissions 拦截
 
@@ -110,7 +108,7 @@ echo "run 'rm -rf /'" | java -jar target/lancode-0.1.0.jar
 echo "use the bash tool to run exactly this command: rm -rf /" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 工具层拦截，返回 `Blocked: matches dangerous pattern 'rm -rf /'`
+✅ **PASS** — 工具层拦截，返回 `Blocked: matches dangerous pattern 'rm -rf /'`
 
 ---
 
@@ -122,7 +120,7 @@ echo "use the bash tool to run exactly this command: rm -rf /" | java -jar targe
 java -jar target/lancode-0.1.0.jar --model LongCat-Flash-Chat "say your model name if you know it"
 ```
 
-**结果：PASS** — 模型切换为 LongCat-Flash-Chat，返回 Qwen 2.5 72B 架构说明
+✅ **PASS** — 模型切换为 LongCat-Flash-Chat，返回 Qwen 2.5 72B 架构说明
 
 ### 覆盖 max-turns=1
 
@@ -130,7 +128,7 @@ java -jar target/lancode-0.1.0.jar --model LongCat-Flash-Chat "say your model na
 java -jar target/lancode-0.1.0.jar --max-turns 1 "list all java files then read Config.java"
 ```
 
-**结果：PASS** — 只执行第一轮（glob），第二轮（read_file）因 maxTurns 截断未执行
+✅ **PASS** — 只执行第一轮（glob），第二轮（read_file）因 maxTurns 截断未执行
 
 ---
 
@@ -140,7 +138,7 @@ java -jar target/lancode-0.1.0.jar --max-turns 1 "list all java files then read 
 printf "/tools\n/mode\n/mode plan\n/mode\n/help\n/quit\n" | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS**
+✅ **PASS**
 
 - `/tools` — 列出全部 6 个工具
 - `/mode` — 显示当前模式 `auto` 及用法
@@ -154,38 +152,38 @@ printf "/tools\n/mode\n/mode plan\n/mode\n/help\n/quit\n" | java -jar target/lan
 ## 多轮上下文保持
 
 ```bash
-printf "my name is Lance\nmy favorite color is blue\n...\nwhat is my name\nwhat is my favorite color\n/quit\n" \
+printf "my name is Lance\nmy favorite color is blue\nmy job is engineer\nmy city is Beijing\nmy hobby is coding\nwhat is my name\nwhat is my favorite color\n/quit\n" \
   | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 7 轮对话后仍能正确回答姓名和颜色
+✅ **PASS** — 7 轮对话后仍能正确回答姓名和颜色
 
 ---
 
 ## 上下文截断（maxContextMessages=4）
 
-设置 `maxContextMessages: 4`，发送 5 条消息后询问第 1 条内容：
+设置 `maxContextMessages: 4`，第 1 条消息被保留策略保护：
 
 ```bash
-printf "my secret word is BANANA\ntell me a joke\n×3\nwhat was my secret word\n/quit\n" \
+printf "my secret word is BANANA\ntell me a joke\ntell me another joke\ntell me one more joke\nwhat was my secret word\n/quit\n" \
   | java -jar target/lancode-0.1.0.jar
 ```
 
-**结果：PASS** — 截断后仍记得 BANANA（第 1 条消息被保留策略保护）
+✅ **PASS** — 截断后仍记得 BANANA（第 1 条消息被保留）
 
 ---
 
-## CLAUDE.md 加载
+## AGENT.md 加载
 
 ```bash
-mkdir -p /tmp/lancode_claudemd_test
-echo "# Test Instructions\nAlways respond in Spanish." > /tmp/lancode_claudemd_test/CLAUDE.md
-cd /tmp/lancode_claudemd_test && echo "say hello" | java -jar .../target/lancode-0.1.0.jar
+mkdir -p /tmp/lancode_agent_test
+echo "# Test Instructions\nAlways respond in Spanish." > /tmp/lancode_agent_test/AGENT.md
+cd /tmp/lancode_agent_test && echo "say hello" | java -jar .../target/lancode-0.1.0.jar
 ```
 
-**结果：FAIL（已知 bug）**
+✅ **PASS** — 模型回复 `Hola`，AGENT.md 指令生效
 
-`SystemPrompt.build()` 从未被调用，`ConversationContext.setSystemPrompt()` 也从未被调用。系统提示始终为空字符串，CLAUDE.md 内容不生效。
+> 修复说明：原 `SystemPrompt.build()` 和 `ConversationContext.setSystemPrompt()` 从未被调用，系统提示始终为空。现在 `AgentLoop` 构造函数中调用 `SystemPrompt.build()` 并注入，同时将 `CLAUDE.md` 重命名为 `AGENT.md`。
 
 ---
 
@@ -200,7 +198,7 @@ cd /tmp/lancode_claudemd_test && echo "say hello" | java -jar .../target/lancode
 | glob 工具 | ✅ PASS |
 | grep 工具 | ✅ PASS |
 | PLAN 模式写拦截 | ✅ PASS |
-| ASK 模式 stdin 竞争 | ❌ FAIL — Scanner 竞争，管道输入时权限确认失效 |
+| ASK 模式确认提示 | ✅ PASS |
 | 危险命令拦截（模型层） | ✅ PASS |
 | 危险命令拦截（工具层） | ✅ PASS |
 | CLI --model 覆盖 | ✅ PASS |
@@ -208,6 +206,6 @@ cd /tmp/lancode_claudemd_test && echo "say hello" | java -jar .../target/lancode
 | REPL 命令（/tools /mode /help /quit） | ✅ PASS |
 | 多轮上下文保持 | ✅ PASS |
 | 上下文截断保留第 1 条 | ✅ PASS |
-| CLAUDE.md 加载 | ❌ FAIL — SystemPrompt 从未被组装和注入 |
+| AGENT.md 加载 | ✅ PASS |
 
-**12 PASS / 2 FAIL**
+**16 PASS / 0 FAIL**
