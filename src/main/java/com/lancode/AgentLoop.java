@@ -42,7 +42,7 @@ public class AgentLoop {
             builder.baseUrl(config.baseUrl);
         }
         if (config.authToken != null && !config.authToken.isBlank()) {
-            // Third-party APIs (e.g. LongCat) use "Authorization: Bearer" instead of "x-api-key".
+            // 第三方 API（如 LongCat）使用 "Authorization: Bearer" 而非 "x-api-key"。
             builder.authToken(config.authToken);
         }
         this.client = builder.build();
@@ -132,7 +132,7 @@ public class AgentLoop {
             ToolResult result = executeSingleTool(name, input);
 
             String prefix = result.isError() ? "  -> Permission denied: " : "  -> [OK] ";
-            // 如果是错误但不是 permission denied，用通用前缀
+            // 若是错误但非权限拒绝，使用通用前缀
             if (result.isError() && !result.output().startsWith("Permission denied:")) {
                 prefix = "  -> [Error] ";
             } else if (result.isError()) {

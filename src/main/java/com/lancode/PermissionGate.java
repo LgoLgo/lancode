@@ -14,13 +14,13 @@ public class PermissionGate {
         this.scanner = scanner;
     }
 
-    /** Returns null if allowed, or a denied ToolResult. */
+    /** 允许则返回 null，拒绝则返回错误 ToolResult。 */
     public ToolResult check(Tool tool, Map<String, Object> params) {
-        // Layer 1: tool self-check
+        // 第一层：工具自检
         ToolResult denial = tool.checkPermissions(params);
         if (denial != null) return ToolResult.error("Permission denied: " + denial.output());
 
-        // Layer 2: mode check
+        // 第二层：模式检查
         if (config.permissionMode == Config.PermissionMode.PLAN && WRITE_TOOLS.contains(tool.name())) {
             return ToolResult.error("Permission denied: '" + tool.name() + "' is blocked in plan (read-only) mode.");
         }
