@@ -34,7 +34,12 @@ public class AgentLoop {
         this.context = context;
         this.registry = registry;
         this.permissionGate = permissionGate;
-        this.client = AnthropicOkHttpClient.fromEnv();
+        AnthropicOkHttpClient.Builder builder = AnthropicOkHttpClient.builder()
+            .fromEnv();
+        if (config.baseUrl != null && !config.baseUrl.isBlank()) {
+            builder.baseUrl(config.baseUrl);
+        }
+        this.client = builder.build();
     }
 
     public String run(String userMessage) {

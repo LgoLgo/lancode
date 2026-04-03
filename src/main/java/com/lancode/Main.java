@@ -24,9 +24,10 @@ public class Main {
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
-                case "--model" -> { if (i + 1 < args.length) config.model = args[++i]; }
-                case "--mode"  -> { if (i + 1 < args.length) config.permissionMode = Config.PermissionMode.valueOf(args[++i].toUpperCase()); }
-                case "--max-turns" -> { if (i + 1 < args.length) config.maxTurns = Integer.parseInt(args[++i]); }
+                case "--model"    -> { if (i + 1 < args.length) config.model = args[++i]; }
+                case "--mode"     -> { if (i + 1 < args.length) config.permissionMode = Config.PermissionMode.valueOf(args[++i].toUpperCase()); }
+                case "--max-turns"-> { if (i + 1 < args.length) config.maxTurns = Integer.parseInt(args[++i]); }
+                case "--base-url" -> { if (i + 1 < args.length) config.baseUrl = args[++i]; }
                 default -> { if (!args[i].startsWith("--")) oneShot = args[i]; }
             }
         }
