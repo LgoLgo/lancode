@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="img/img.png" alt="lancode" width="480" />
+<img src="img/logo.png" alt="lancode" width="480" />
 
 **用 Java 实现的极简 Claude Code Agent Loop。**
 
