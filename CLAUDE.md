@@ -2,7 +2,7 @@
 
 ## What this is
 
-A minimal Java implementation of Claude Code's agent loop. ~800 lines, single Maven module, Java 17.
+A minimal Java implementation of Claude Code's agent loop. ~900 lines, single Maven module, Java 17.
 
 The goal is pedagogical fidelity: each class maps directly to a Claude Code subsystem. Do not add abstractions that don't exist in the original.
 
@@ -25,7 +25,7 @@ All changes must pass `mvn test -q` before committing. Do not modify test logic 
 | `Config.java` | All configuration fields + `Config.load()` from `~/.lancode/settings.json` |
 | `ConversationContext.java` | Message list, truncation, system prompt storage |
 | `PermissionGate.java` | Two-layer permission check before tool execution |
-| `SystemPrompt.java` | Assembles system prompt string; loads `CLAUDE.md` from project root |
+| `SystemPrompt.java` | Assembles system prompt string; loads `AGENT.md` from project root |
 | `tools/Tool.java` | Interface: `name()`, `description()`, `inputSchema()`, `execute()` |
 | `tools/ToolResult.java` | Record: `output`, `isError` |
 | `tools/ToolRegistry.java` | Registry + `apiSchemas()` converting to SDK `Tool` objects |
@@ -47,7 +47,7 @@ All changes must pass `mvn test -q` before committing. Do not modify test logic 
 ## Configuration loading
 
 `Config.load()` reads `~/.lancode/settings.json` via Jackson. CLI args override after load.
-Fields: `model`, `baseUrl`, `apiKey`, `permissionMode`, `maxTurns`, `maxContextMessages`.
+Fields: `model`, `baseUrl`, `apiKey`, `authToken`, `permissionMode`, `maxTurns`, `maxContextMessages`.
 File missing = use defaults. Parse error = warn + use defaults.
 
 ## Constraints

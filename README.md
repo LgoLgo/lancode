@@ -16,6 +16,18 @@
 
 从 Claude Code 的架构中提炼而来 —— Agent Loop、工具系统、权限模型、上下文管理 —— 剥离到最核心的结构，方便阅读和学习。
 
+## 课程
+
+配套课程逐章解析各子系统的实现原理，适合已有 LLM 基础、想深入了解 Agent Loop 内部机制的工程师。
+
+| 章节 | 内容 | 链接 |
+|------|------|------|
+| 第一章：Agent Loop | 核心循环逻辑 | [阅读](https://lgolgo.github.io/lancode/01-agent-loop) |
+| 第二章：工具系统 | Tool 接口、Registry、6 个内置工具 | [阅读](https://lgolgo.github.io/lancode/02-tool-system) |
+| 第三章：权限模型 | PermissionGate 双层检查机制 | [阅读](https://lgolgo.github.io/lancode/03-permission) |
+| 第四章：对话上下文 | ConversationContext 消息管理与截断 | [阅读](https://lgolgo.github.io/lancode/04-context) |
+| 第五章：系统提示词 | SystemPrompt 组装逻辑 | [阅读](https://lgolgo.github.io/lancode/05-system-prompt) |
+
 ## 系统设计
 
 ### 架构
@@ -215,17 +227,3 @@ mvn package -DskipTests    # 构建 fat jar
 ## 许可证
 
 Apache 2.0
-
----
-
-## 课程
-
-配套课程逐章解析各子系统的实现原理，适合已有 LLM 基础、想深入了解 Agent Loop 内部机制的工程师。
-
-| 章节 | 内容 | 链接 |
-|------|------|------|
-| 第一章：Agent Loop | 核心循环逻辑 | [阅读](https://lgolgo.github.io/lancode/01-agent-loop) |
-| 第二章：工具系统 | Tool 接口、Registry、6 个内置工具 | [阅读](https://lgolgo.github.io/lancode/02-tool-system) |
-| 第三章：权限模型 | PermissionGate 双层检查机制 | [阅读](https://lgolgo.github.io/lancode/03-permission) |
-| 第四章：对话上下文 | ConversationContext 消息管理与截断 | [阅读](https://lgolgo.github.io/lancode/04-context) |
-| 第五章：系统提示词 | SystemPrompt 组装逻辑 | [阅读](https://lgolgo.github.io/lancode/05-system-prompt) |

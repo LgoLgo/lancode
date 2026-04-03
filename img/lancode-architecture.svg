@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700">
+  <defs>
+    <filter id="sh" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000014"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="700" fill="#f7f3ec"/>
+
+  <!-- 入口层 -->
+  <rect x="32" y="24" width="896" height="108" rx="10" fill="#fff8ee" stroke="#e8d5b0" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="52" y="46" font-size="11" font-weight="600" fill="#b8860b" font-family="system-ui,-apple-system,sans-serif">入口层</text>
+  <rect x="340" y="56" width="280" height="62" rx="8" fill="#fff" stroke="#e0c87a" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="480" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#5a4a00" font-family="system-ui,-apple-system,sans-serif">Main</text>
+  <text x="480" y="97" text-anchor="middle" font-size="11" fill="#888" font-family="system-ui,-apple-system,sans-serif">CLI 入口 · REPL 循环 · 参数解析</text>
+  <text x="480" y="111" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">Main.java</text>
+
+  <!-- 核心循环层 -->
+  <rect x="32" y="152" width="896" height="108" rx="10" fill="#eef4ff" stroke="#b0c8e8" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="52" y="174" font-size="11" font-weight="600" fill="#2a5fa0" font-family="system-ui,-apple-system,sans-serif">核心循环层</text>
+  <rect x="300" y="184" width="360" height="62" rx="8" fill="#fff" stroke="#7aade0" stroke-width="2" filter="url(#sh)"/>
+  <text x="480" y="208" text-anchor="middle" font-size="14" font-weight="700" fill="#1a4a80" font-family="system-ui,-apple-system,sans-serif">AgentLoop</text>
+  <text x="480" y="225" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui,-apple-system,sans-serif">callApi · executeToolCalls · 循环控制</text>
+  <text x="480" y="239" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">AgentLoop.java · 达到 maxTurns 或无 tool_use 时退出</text>
+
+  <!-- 核心支撑层 -->
+  <rect x="32" y="280" width="896" height="116" rx="10" fill="#f5f2ec" stroke="#d0c8b8" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="52" y="302" font-size="11" font-weight="600" fill="#6a5a40" font-family="system-ui,-apple-system,sans-serif">核心支撑层</text>
+  <rect x="50" y="312" width="198" height="70" rx="8" fill="#fff" stroke="#c8b888" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="149" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#3a2c18" font-family="system-ui,-apple-system,sans-serif">ConversationContext</text>
+  <text x="149" y="351" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui,-apple-system,sans-serif">消息列表 / 上下文截断</text>
+  <text x="149" y="366" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">addUserMessage · addToolResults</text>
+  <rect x="268" y="312" width="198" height="70" rx="8" fill="#fff" stroke="#c8b888" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="367" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#3a2c18" font-family="system-ui,-apple-system,sans-serif">PermissionGate</text>
+  <text x="367" y="351" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui,-apple-system,sans-serif">工具自检 + 模式检查</text>
+  <text x="367" y="366" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">AUTO · ASK · PLAN</text>
+  <rect x="486" y="312" width="198" height="70" rx="8" fill="#fff" stroke="#c8b888" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="585" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#3a2c18" font-family="system-ui,-apple-system,sans-serif">SystemPrompt</text>
+  <text x="585" y="351" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui,-apple-system,sans-serif">组装系统提示</text>
+  <text x="585" y="366" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">读取 AGENT.md</text>
+  <rect x="704" y="312" width="184" height="70" rx="8" fill="#fff" stroke="#c8b888" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="796" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#3a2c18" font-family="system-ui,-apple-system,sans-serif">Config</text>
+  <text x="796" y="351" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui,-apple-system,sans-serif">配置字段 / 安全列表</text>
+  <text x="796" y="366" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui,-apple-system,sans-serif">~/.lancode/settings.json</text>
+
+  <!-- 工具系统层 -->
+  <rect x="32" y="416" width="896" height="148" rx="10" fill="#f0faf0" stroke="#a8d8a8" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="52" y="438" font-size="11" font-weight="600" fill="#2a7a2a" font-family="system-ui,-apple-system,sans-serif">工具系统层</text>
+  <rect x="300" y="448" width="360" height="52" rx="8" fill="#fff" stroke="#70b870" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="480" y="471" text-anchor="middle" font-size="13" font-weight="700" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">ToolRegistry</text>
+  <text x="480" y="489" text-anchor="middle" font-size="10" fill="#666" font-family="system-ui,-apple-system,sans-serif">工具注册 · API schema 生成 · Tool + ToolResult</text>
+  <rect x="50" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="115" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">BashTool</text>
+  <text x="115" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">Shell 执行</text>
+  <rect x="196" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="261" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">FileReadTool</text>
+  <text x="261" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">文件读取</text>
+  <rect x="342" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="407" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">FileWriteTool</text>
+  <text x="407" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">文件写入</text>
+  <rect x="488" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="553" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">FileEditTool</text>
+  <text x="553" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">StrReplace</text>
+  <rect x="634" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="699" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">GlobTool</text>
+  <text x="699" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">路径匹配</text>
+  <rect x="780" y="514" width="130" height="36" rx="7" fill="#fff" stroke="#90c890" stroke-width="1" filter="url(#sh)"/>
+  <text x="845" y="534" text-anchor="middle" font-size="11" font-weight="600" fill="#1a5a1a" font-family="system-ui,-apple-system,sans-serif">GrepTool</text>
+  <text x="845" y="547" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">正则搜索</text>
+
+  <!-- 外部系统层 -->
+  <rect x="32" y="584" width="896" height="100" rx="10" fill="#fdf0f8" stroke="#d8a8c8" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="52" y="606" font-size="11" font-weight="600" fill="#7a2a6a" font-family="system-ui,-apple-system,sans-serif">外部系统层</text>
+  <rect x="50" y="616" width="158" height="52" rx="7" fill="#fff" stroke="#c890b8" stroke-width="1" filter="url(#sh)"/>
+  <text x="129" y="638" text-anchor="middle" font-size="11" font-weight="600" fill="#5a1a4a" font-family="system-ui,-apple-system,sans-serif">settings.json</text>
+  <text x="129" y="654" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">~/.lancode/</text>
+  <rect x="224" y="616" width="158" height="52" rx="7" fill="#fff" stroke="#c890b8" stroke-width="1" filter="url(#sh)"/>
+  <text x="303" y="638" text-anchor="middle" font-size="11" font-weight="600" fill="#5a1a4a" font-family="system-ui,-apple-system,sans-serif">AGENT.md</text>
+  <text x="303" y="654" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">项目上下文文档</text>
+  <rect x="398" y="616" width="164" height="52" rx="7" fill="#fff" stroke="#c890b8" stroke-width="1" filter="url(#sh)"/>
+  <text x="480" y="638" text-anchor="middle" font-size="11" font-weight="600" fill="#5a1a4a" font-family="system-ui,-apple-system,sans-serif">Anthropic API</text>
+  <text x="480" y="654" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">/ 兼容 API</text>
+  <rect x="578" y="616" width="164" height="52" rx="7" fill="#fff" stroke="#c890b8" stroke-width="1" filter="url(#sh)"/>
+  <text x="660" y="638" text-anchor="middle" font-size="11" font-weight="600" fill="#5a1a4a" font-family="system-ui,-apple-system,sans-serif">本地文件系统</text>
+  <text x="660" y="654" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">读 / 写 / 搜索</text>
+  <rect x="758" y="616" width="158" height="52" rx="7" fill="#fff" stroke="#c890b8" stroke-width="1" filter="url(#sh)"/>
+  <text x="837" y="638" text-anchor="middle" font-size="11" font-weight="600" fill="#5a1a4a" font-family="system-ui,-apple-system,sans-serif">Shell</text>
+  <text x="837" y="654" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui,-apple-system,sans-serif">命令执行环境</text>
+</svg>
