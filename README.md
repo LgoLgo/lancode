@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![中文](https://img.shields.io/badge/文档-中文版-red.svg)](README.zh.md)
 
-~700 lines. Runs against any Anthropic-compatible API.
+~900 lines. Runs against any Anthropic-compatible API.
 
 </div>
 
@@ -19,60 +19,7 @@ Distilled from Claude Code's architecture — the agentic loop, tool system, per
 
 ## What's implemented
 
-```mermaid
----
-title: lancode vs Claude Code subsystems
----
-%%{
-  init: {
-    'theme': 'base',
-    'themeVariables': {
-      'primaryColor': '#E6E2DA',
-      'primaryTextColor': '#2C2C2C',
-      'primaryBorderColor': '#8C867F',
-      'lineColor': '#8C867F',
-      'fontFamily': 'Georgia, serif'
-    }
-  }
-}%%
-flowchart TD
-    subgraph implemented["Implemented in lancode"]
-        AL["Agent Loop<br/>synchronous · sequential"]
-        CC["Conversation Context<br/>in-memory · truncation"]
-        PG["Permission Gate<br/>2 layers: self-check + mode"]
-        SP["System Prompt<br/>tools + AGENT.md + mode"]
-        TR["Tool Registry<br/>6 core tools"]
-        T1["bash"]
-        T2["read_file · write_file · edit_file"]
-        T3["glob · grep"]
-    end
-
-    subgraph out["Out of scope"]
-        S1["Session Persistence"]
-        S2["Context Compaction"]
-        S3["MCP Extension"]
-        S4["Streaming / SSE"]
-        S5["Hook System"]
-        S6["SubAgent / Teams"]
-        S7["Sandbox Policy"]
-    end
-
-    AL --> CC
-    AL --> PG
-    AL --> SP
-    AL --> TR
-    TR --> T1
-    TR --> T2
-    TR --> T3
-
-    classDef impl     fill:#D7E6DC,stroke:#7FB08F,color:#2C2C2C,stroke-width:1.5px
-    classDef tool     fill:#EAF4FB,stroke:#6FA8D6,color:#2C2C2C,stroke-width:1.5px
-    classDef outscope fill:#EFECE6,stroke:#B4AEA6,color:#2C2C2C,stroke-width:1.5px
-
-    class AL,CC,PG,SP,TR impl
-    class T1,T2,T3 tool
-    class S1,S2,S3,S4,S5,S6,S7 outscope
-```
+<!-- diagram: img/subsystems.png -->
 
 ## Install
 

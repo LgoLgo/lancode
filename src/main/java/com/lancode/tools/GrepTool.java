@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.*;
 import java.util.*;
 import java.util.regex.*;
-import java.util.stream.Collectors;
 
 public class GrepTool implements Tool {
     private static final ObjectMapper MAPPER = new ObjectMapper();
