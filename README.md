@@ -7,8 +7,9 @@
 [![CI](https://github.com/LgoLgo/lancode/actions/workflows/ci.yml/badge.svg)](https://github.com/LgoLgo/lancode/actions/workflows/ci.yml)
 [![Java 17](https://img.shields.io/badge/Java-17-blue?logo=openjdk)](https://openjdk.org/projects/jdk/17/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
+[![中文](https://img.shields.io/badge/文档-中文版-red.svg)](README.zh.md)
 
-~800 lines. Runs against any Anthropic-compatible API.
+~700 lines. Runs against any Anthropic-compatible API.
 
 </div>
 
